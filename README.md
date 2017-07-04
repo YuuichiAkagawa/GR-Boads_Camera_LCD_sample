@@ -1,4 +1,24 @@
-# GR-Boads_Camera_LCD_sample
+# GR-Boads_Camera_LCD_sample with ESP32 
+[オリジナル](https://github.com/d-kato/GR-Boads_Camera_LCD_sample)のGR-Boards_Camera_LCD_sampleに対し、ESP32をWiFi APとしてHTTP経由でカメラ画像を見られるようにしたモノです。GR-LYCHEEでのみ動作します。
+
+ESP32には[このアプリ](https://github.com/YuuichiAkagawa/esp32-DisplayApp-WebServer)を書き込んでください。
+
+GR-LYCHEEのボード上でESP32とRZ/A1LUはUARTで接続されているため、1Mbps程度の転送速度に制限されるため、1フレーム当たり10KB以下、10fps程度の性能となります。main.cppとmbed_app.jsonは設定済みなので、そのままビルドすれば使用可能な状態になっています。
+パラメータとしては、下記が推奨値です。
+```
+/** JPEG out setting **/
+#define JPEG_SEND              (1)  
+#define JPEG_ENCODE_QUALITY    (60) 
+#define VFIELD_INT_SKIP_CNT    (5)  
+
+#define VIDEO_PIXEL_HW       (320u)  /* QVGA */
+#define VIDEO_PIXEL_VW       (240u)  /* QVGA */
+```
+
+以下、オリジナルのドキュメント
+
+---
+
 GR-PEACH、および、GR-LYCHEEで動作するサンプルプログラムです。  
 GR-LYCHEEの開発環境については、[GR-LYCHEE用オフライン開発環境の手順](https://developer.mbed.org/users/dkato/notebook/offline-development-lychee-langja/)を参照ください。
 

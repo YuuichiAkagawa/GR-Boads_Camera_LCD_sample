@@ -1,15 +1,14 @@
-
 #include "mbed.h"
 #include "EasyAttach_CameraAndLCD.h"
 
 /**** User Selection *********/
 /** JPEG out setting **/
 #define JPEG_SEND              (1)                 /* Select  0(JPEG images are not output to PC) or 1(JPEG images are output to PC on USB(CDC) for focusing the camera) */
-#define JPEG_ENCODE_QUALITY    (75)                /* JPEG encode quality (min:1, max:75 (Considering the size of JpegBuffer, about 75 is the upper limit.)) */
-#define VFIELD_INT_SKIP_CNT    (0)                 /* A guide for GR-LYCHEE.  0:60fps, 1:30fps, 2:20fps, 3:15fps, 4:12fps, 5:10fps */
+#define JPEG_ENCODE_QUALITY    (60)                /* JPEG encode quality (min:1, max:75 (Considering the size of JpegBuffer, about 75 is the upper limit.)) */
+#define VFIELD_INT_SKIP_CNT    (5)                 /* A guide for GR-LYCHEE.  0:60fps, 1:30fps, 2:20fps, 3:15fps, 4:12fps, 5:10fps */
 
 /** Camera setting **/
-#define OV7725_SETTING_TEST    (1)                 /* Exposure and Gain Setting Test 0:disable 1:enable */
+#define OV7725_SETTING_TEST    (0)                 /* Exposure and Gain Setting Test 0:disable 1:enable */
 /*****************************/
 
 /* Video input and LCD layer 0 output */
@@ -27,8 +26,8 @@
   #define ASPECT_RATIO_16_9    (1)
   #endif
 #else
-  #define VIDEO_PIXEL_HW       (640u)  /* VGA */
-  #define VIDEO_PIXEL_VW       (480u)  /* VGA */
+  #define VIDEO_PIXEL_HW       (320u)  /* QVGA */
+  #define VIDEO_PIXEL_VW       (240u)  /* QVGA */
 #endif
 
 #define FRAME_BUFFER_STRIDE    (((VIDEO_PIXEL_HW * DATA_SIZE_PER_PIC) + 31u) & ~31u)
@@ -45,7 +44,8 @@ static uint8_t user_frame_buffer0[FRAME_BUFFER_STRIDE * FRAME_BUFFER_HEIGHT]__at
 
 #if JPEG_SEND
 #include "JPEG_Converter.h"
-#include "DisplayApp.h"
+//#include "DisplayApp.h"
+#include "DisplayAppEsp32.h"
 #include "dcache-control.h"
 
 #if defined(__ICCARM__)
@@ -61,7 +61,8 @@ static int jcu_buf_index_write_done = 0;
 static int jcu_buf_index_read = 0;
 static volatile int jcu_encoding = 0;
 static volatile int image_change = 0;
-static DisplayApp  display_app;
+//static DisplayApp  display_app;
+static DisplayAppEsp32  display_app;
 static int Vfield_Int_Cnt = 0;
 
 static void JcuEncodeCallBackFunc(JPEG_Converter::jpeg_conv_error_t err_code) {
