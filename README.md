@@ -3,7 +3,7 @@
 
 ESP32には[このアプリ](https://github.com/YuuichiAkagawa/esp32-DisplayApp-WebServer)を書き込んでください。
 
-GR-LYCHEEのボード上でESP32とRZ/A1LUはUARTで接続されているため、1Mbps程度の転送速度に制限されるため、1フレーム当たり10KB以下、10fps程度の性能となります。main.cppとmbed_app.jsonは設定済みなので、そのままビルドすれば使用可能な状態になっています。
+GR-LYCHEEのボード上でESP32とRZ/A1LUはUARTで接続されており、1Mbps程度の転送速度に制限されるため、1フレーム当たり10KB以下、10fps程度の性能となります。main.cppとmbed_app.jsonは設定済みなので、そのままビルドすれば使用可能な状態になっています。
 パラメータとしては、下記が推奨値です。
 ```
 /** JPEG out setting **/
@@ -14,6 +14,17 @@ GR-LYCHEEのボード上でESP32とRZ/A1LUはUARTで接続されているため�
 #define VIDEO_PIXEL_HW       (320u)  /* QVGA */
 #define VIDEO_PIXEL_VW       (240u)  /* QVGA */
 ```
+
+## ビルド方法
+mbed importではブランチを指定することが出来ないので以下の手順で実行してください。
+```
+$ mbed import https://github.com/YuuichiAkagawa/GR-Boads_Camera_LCD_sample
+$ cd GR-Boads_Camera_LCD_sample
+$ git checkout esp32
+$ mbed update
+$ mbed compile -m GR_LYCHEE -t GCC_ARM --profile debug
+```
+
 
 以下、オリジナルのドキュメント
 
